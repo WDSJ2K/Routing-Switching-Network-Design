@@ -36,7 +36,7 @@ Networks:
 10.1.2.0/24
 10.1.3.0/24
 
-![Topology](../diagrams/001-routing-topology.png)
+![Routing Topology](../diagrams/001-basic-routing.png)
 
 
 
