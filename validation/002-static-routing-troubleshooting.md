@@ -1,44 +1,80 @@
-# Lab 17: Routing Protocol Behavior & Failover Analysis
+# Lab: Routing Behavior & Failover Analysis
 
-## 🎯 Objective
-- Compare routing protocol behavior (RIP, OSPF, EIGRP)
-- Observe route selection and failover
-- Validate loopback advertisement and adjacency behavior
+## Objective
 
----
-
-## 🧠 Scenario
-A multi-router topology is configured using multiple routing protocols.
-The lab evaluates:
-- Protocol route selection (AD, metric)
-- Failover behavior when links go down
-- Loopback reachability and advertisement
-- Effect of passive interfaces on adjacency
+Analyze routing behavior and verify network failover under different conditions.
 
 ---
 
-## 🏗️ Topology Overview
-Devices:
-- R1–R5
-- PC1–PC3
+## Topology
+
+* R1–R5, PC1–PC3
+* Multiple routed subnets (10.0.x.x / 10.1.x.x)
+
 ![Topology](../diagrams/002-static-routing-topology.jpg)
 
-Networks:
-- 10.0.0.0/24 – 10.0.3.0/24
-- 10.1.0.0/24 – 10.1.3.0/24
-- Loopbacks: 192.168.0.1-5/32
+---
+
+## Scenario
+
+Simulated a multi-router network to observe:
+
+* Route selection across protocols
+* Behavior during link failure
+* Connectivity issues caused by missing routes
 
 ---
 
-# =========================
-# 🔹 PHASE 1 – RIP BASELINE
-# =========================
+## Key Observations
 
-## Configuration
-- RIP enabled on all routers
+* Different routing protocols select paths based on metrics and administrative distance
+* When a primary link fails, traffic reroutes through an alternate path
+* Missing route entries result in traffic being dropped at intermediate routers
 
-## Verification
-```bash
-show ip route
+---
+
+## Troubleshooting Example
+
+### Problem
+
+End devices could not communicate across networks (PC3 → PC1 failed).
+
+---
+
+### What I Checked
+
+* Verified default gateway reachability
+* Used `tracert` to identify failure point (traffic stopped at R3)
+* Reviewed routing tables on intermediate routers
+
+---
+
+### Root Cause
+
+* R3 was missing a route to the 10.1.2.0/24 network
+
+---
+
+### Fix
+
+```cisco id="fix001"
+ip route 10.1.2.0 255.255.255.0 10.1.1.1
+```
+
+---
+
+### Verification
+
+* Successful ping between PC3 and PC1
+* Routing table updated with correct path
+* End-to-end connectivity restored
+
+---
+
+## Key Takeaways
+
+* Static routing requires complete path configuration
+* Missing routes cause traffic to fail at intermediate hops
+* Traceroute is effective for isolating failure points
 
 
