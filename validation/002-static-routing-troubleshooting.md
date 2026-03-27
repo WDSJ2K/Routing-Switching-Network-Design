@@ -21,7 +21,7 @@ The lab evaluates:
 Devices:
 - R1–R5
 - PC1–PC3
-![Topology](../diagrams/002-dynamic-routing-topology.png)
+![Topology](../diagrams/002-static-routing-topology.png)
 
 Networks:
 - 10.0.0.0/24 – 10.0.3.0/24
